@@ -1,0 +1,38 @@
+{
+  "url": "http://127.0.0.1:8081/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Nhật Khảo Đạo Công",
+      "hasCanvas": false,
+      "bodyTextLen": 4361,
+      "bodyTextHash": "4eba946448b31cdd9f2e141cbc1a27cbc5008d7b2268936e61d4791e7b4a7f34",
+      "bodyTextPrefix": "日考道功 Nhật Khảo Đạo Công Phiếu mới Lịch sử Xu hướng Căn cứ 每坐一考 ·",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Nhật Khảo Đạo Công",
+      "hasCanvas": false,
+      "bodyTextLen": 4361,
+      "bodyTextHash": "4eba946448b31cdd9f2e141cbc1a27cbc5008d7b2268936e61d4791e7b4a7f34",
+      "bodyTextPrefix": "日考道功 Nhật Khảo Đạo Công Phiếu mới Lịch sử Xu hướng Căn cứ 每坐一考 ·",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-built.json",
+  "divergesFromBaseline": false,
+  "baselineReasons": []
+}

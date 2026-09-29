@@ -1,0 +1,140 @@
+export type Score = 0 | 1 | 2 | 3 | 4;
+
+export const SCORE_LABELS: Record<Score, string> = {
+  0: "Chưa rõ",
+  1: "Lệch",
+  2: "Sơ khởi",
+  3: "Khớp",
+  4: "Vững",
+};
+
+export type Criterion = {
+  id: string;
+  so: number;
+  ten: string;
+  hoi: string;
+  goiY: string[];
+  han: string;
+  dich: string;
+  nguon: string;
+  canhBao: string;
+};
+
+export const CRITERIA: Criterion[] = [
+  {
+    id: "nguon-khi",
+    so: 1,
+    ten: "Nguồn khí Cam Lộ",
+    hoi: "Khí mát từ trong đỉnh sinh rồi xuống, hay như bị rót từ ngoài vào?",
+    goiY: [
+      "Từ trong mở ra, thấm mát rồi giáng",
+      "Không phân biệt được",
+      "Cảm như ánh sáng / khí từ ngoài đỉnh tràn vào",
+    ],
+    han: "自內而開出者真，自外而開入者幻。",
+    dich: "Từ trong mở ra thì chân; từ ngoài mở vào thì ảo.",
+    nguon: "Mẫn Nhất Đắc · Quan Khiếu Yếu Chỉ",
+    canhBao: "Nếu khí luôn như bị rót từ ngoài: ghi lệch, đừng cưỡng mở thêm.",
+  },
+  {
+    id: "thien-mon",
+    so: 2,
+    ten: "Thiên Môn / Bách Hội",
+    hoi: "Đỉnh đầu mát, thông, không căng nóng?",
+    goiY: ["Mát, thấm, nhẹ", "Có lúc mát có lúc căng", "Nóng, căng, nhức kéo dài"],
+    han: "頂則露灑崑崙……甘霖霈灑，流池若注，味香而甜。",
+    dich: "Đỉnh thì sương rưới Côn Lôn… cam lâm đổ như rót, vị thơm mà ngọt.",
+    nguon: "Mẫn Nhất Đắc · Quan Khiếu Yếu Chỉ",
+    canhBao: "Nóng căng kéo dài là tiến hỏa lệch, không phải Cam Lộ.",
+  },
+  {
+    id: "ne-hoan",
+    so: 3,
+    ten: "Nê Hoàn hư linh",
+    hoi: "Bên trong đầu có cảm giác rỗng, thần sáng, không hôn trầm?",
+    goiY: ["Rỗng mà tỉnh", "Rỗng xen mơ màng", "Nặng đầu, hôn trầm, choáng"],
+    han: "天谷元神，守之自真。天谷者，泥丸宮也……空洞之界也。",
+    dich: "Thiên Cốc nguyên thần, giữ thì tự chân. Thiên Cốc tức Nê Hoàn… cõi trống rỗng.",
+    nguon: "Chú Đạo Đức / Linh Khu",
+    canhBao: "Rỗng mà hôn mê khác với hư linh. Hư linh phải tỉnh.",
+  },
+  {
+    id: "luc-can",
+    so: 4,
+    ten: "Lục căn + Mắt 3",
+    hoi: "Mắt tai mũi lưỡi xúc ý / Mắt 3 mở nhưng không bị quang–thanh kéo tán?",
+    goiY: ["Mở mà thu, không đuổi cảnh", "Mở rồi bị quang/tiếng kéo", "Bế hoặc loạn"],
+    han: "一面之神宗泥丸。一根既返本，六根成解脫。",
+    dich: "Các thần của mặt tôn Nê Hoàn làm tông. Một căn về gốc thì sáu căn giải thoát.",
+    nguon: "Hoàng Đình Nội Cảnh · Tịnh Hư Tử",
+    canhBao: "Khai căn rồi đuổi theo ảo quang là tán thần, không phải giải thoát.",
+  },
+  {
+    id: "tam-truc",
+    so: 5,
+    ten: "Ba trục Nhâm–Đốc",
+    hoi: "Đại Chùy–Thiên Đột, Đản Trung–Linh Đài, Thần Khuyết–Mệnh Môn có thông, không kẹt?",
+    goiY: ["Ba tầng trước–sau đều thông", "Một–hai cặp thông", "Kẹt cổ / ngực / lưng"],
+    han: "膻中者，為氣之海。丹田有三：上田神舍，中田氣府，下田精區。",
+    dich: "Đản Trung là biển khí. Ba đan điền: thượng nhà thần, trung phủ khí, hạ khu tinh.",
+    nguon: "Linh Khu · Hải Luận / Chung Lã Truyền Đạo Tập",
+    canhBao: "Thông một tầng trên mà kẹt dưới là khí phù.",
+  },
+  {
+    id: "tu-chi",
+    so: 6,
+    ten: "Lao Cung & Dũng Tuyền",
+    hoi: "Khí ra được hai lòng bàn tay–chân, và thu về được không?",
+    goiY: ["Ra rồi thu về đan điền", "Ra mạnh, thu yếu", "Chỉ xì ra, không về"],
+    han: "上通泥丸，下透湧泉。真人之息以踵。",
+    dich: "Trên thông Nê Hoàn, dưới thấu Dũng Tuyền. Chân nhân thở đến gót.",
+    nguon: "Bát Mạch Kinh / Trang Tử",
+    canhBao: "Chỉ ra không thu = khí tiết, không phải công thành.",
+  },
+  {
+    id: "mao-khieu",
+    so: 7,
+    ten: "Mao khiếu / lớp da",
+    hoi: "Toàn thân lỗ lông / bề mặt da có khí, như sâu bò, mát lan?",
+    goiY: ["Lan đều rồi thu", "Lan mạnh ở da, trong rỗng", "Không có / chỉ nóng rát"],
+    han: "八萬四千毫竅、三百六十骨節一齊爆開。一竅開百竅齊開。",
+    dich: "Tám vạn bốn nghìn lỗ lông, ba trăm sáu mươi đốt xương cùng mở. Một khiếu mở thì trăm khiếu mở.",
+    nguon: "Mẫn Nhất Đắc · Quan Khiếu Yếu Chỉ",
+    canhBao: "Khí chỉ ở da mà bụng rỗng là tán, chưa quy căn.",
+  },
+  {
+    id: "ha-dan",
+    so: 8,
+    ten: "Quy căn Hạ Đan",
+    hoi: "Sau khi khí lên đỉnh / ra da, bụng dưới ấm, có chỗ về?",
+    goiY: ["Hạ đan ấm, vững, khí có nhà", "Ấm lúc được lúc mất", "Đầu đầy, bụng rỗng"],
+    han: "自上田復下田。化為甘露，降下重樓，復歸坤位。",
+    dich: "Từ thượng điền trở lại hạ điền. Hóa Cam Lộ, xuống Trùng Lâu, về vị Khôn.",
+    nguon: "Chung Lã / Tính Mệnh Khuê Chỉ",
+    canhBao: "Đây là tiêu chí then chốt giai đoạn của bạn. Không về hạ đan thì chưa hoàn lộ.",
+  },
+  {
+    id: "dia-ho",
+    so: 9,
+    ten: "Địa Hộ bế",
+    hoi: "Gốc dưới kín: không tiết tinh, không khí hạ trệ, không mất gốc?",
+    goiY: ["Kín, an, khí không lậu", "Hơi không vững", "Tiết, nóng hạ tiêu, mất gốc"],
+    han: "天門常開，地戶永閉。閉塞命門保玉都。",
+    dich: "Thiên Môn thường mở, Địa Hộ mãi đóng. Đóng kín Mệnh Môn, giữ Ngọc Đô.",
+    nguon: "Bát Mạch Kinh / Hoàng Đình",
+    canhBao: "Đỉnh mở mà địa hộ không bế là lệch mệnh công.",
+  },
+  {
+    id: "vo-vi",
+    so: 10,
+    ten: "Hữu vi / vô vi",
+    hoi: "Buổi này có cưỡng ý dẫn khí, đuổi cảnh, tiến hỏa không?",
+    goiY: ["Quên rồi lại quên, khí tự vận", "Có dẫn nhẹ rồi buông", "Cưỡng dẫn, đuổi quang, thổi hỏa"],
+    han: "自有天然真火候，不須柴炭及吹噓。忘而又忘，玄關斯闢。",
+    dich: "Sẵn hỏa hầu trời sinh, không cần củi than và thổi. Quên rồi lại quên, Huyền Quan mới mở.",
+    nguon: "Ngộ Chân Thiên / Quan Khiếu Yếu Chỉ",
+    canhBao: "Giai đoạn Cam Lộ: cổ tịch bảo thoái phù, đừng tiến hỏa.",
+  },
+];
+
+export const TRONG_TAM = ["ha-dan", "dia-ho", "vo-vi", "nguon-khi"] as const;

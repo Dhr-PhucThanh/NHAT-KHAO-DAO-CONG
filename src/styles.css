@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #f3eee4;
+  --color-surface: #faf6ee;
+  --color-ink: #1c1915;
+  --color-muted: #6b645a;
+  --color-subtle: #8a8276;
+  --color-line: #d8d0c2;
+  --color-pine: #2f4a43;
+  --color-pine-fg: #f4efe4;
+  --color-warn: #8a3d32;
+  --color-ok: #2f4a43;
+  --font-display: "Noto Serif", "Noto Serif SC", "Source Han Serif", serif;
+  --font-sans: "Source Sans 3", "Noto Sans", system-ui, sans-serif;
+  --font-han: "Noto Serif SC", "Noto Serif", serif;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+}
+
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  html {
+    background: var(--color-bg);
+    color: var(--color-ink);
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-bg);
+    color: var(--color-ink);
+    min-height: 100dvh;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-pine) 22%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
