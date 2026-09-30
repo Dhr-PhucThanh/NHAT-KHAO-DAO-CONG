@@ -1,154 +1,183 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
-import { CriterionCard } from "@/components/criterion-card";
-import { CRITERIA, type Score } from "@/lib/criteria";
-import {
-  emptyNotes,
-  emptyScores,
-  quyCan,
-  type Session,
-} from "@/lib/journal";
+import { useState } from "react";
 
 export const Route = createFileRoute("/")({ component: Home });
 
-function blankDraft(): Session {
-  return {
-    id: "draft",
-    createdAt: "",
-    date: "",
-    durationMin: 30,
-    scores: emptyScores(),
-    notes: emptyNotes(),
-    tong: "",
-  };
+interface SessionData {
+  id: string;
+  date: string;
+  durationMin: number;
+  score1: number;
+  score2: number;
+  score3: number;
+  score4: number;
+  note: string;
 }
 
 function Home() {
-  const [draft, setDraft] = useState<Session>(blankDraft);
-  const [successMsg, setSuccessMsg] = useState(false);
+  const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
+  const [durationMin, setDurationMin] = useState(30);
+  const [score1, setScore1] = useState(3);
+  const [score2, setScore2] = useState(3);
+  const [score3, setScore3] = useState(3);
+  const [score4, setScore4] = useState(3);
+  const [note, setNote] = useState("");
+  const [success, setSuccess] = useState(false);
 
-  useEffect(() => {
-    const now = new Date();
-    setDraft((d) => ({
-      ...d,
-      id: `${now.getTime().toString(36)}-${Math.random().toString(36).slice(2, 8)}`,
-      createdAt: now.toISOString(),
-      date: d.date || now.toISOString().slice(0, 10),
-    }));
-  }, []);
+  // Tính chỉ số trung bình an toàn tuyệt đối, không sợ lỗi chia hay vòng lặp
+  const quyCan = Number(((score1 + score2 + score3 + score4) / 4).toFixed(1));
 
-  const qc = useMemo(() => quyCan(draft), [draft]);
-
-  function save() {
+  function handleSave() {
     try {
-      const now = new Date();
-      const sessionToSave: Session = {
-        ...draft,
-        id: draft.id === "draft" ? `${now.getTime().toString(36)}` : draft.id,
-        createdAt: now.toISOString(),
-        date: draft.date || now.toISOString().slice(0, 10),
+      const newSession: SessionData = {
+        id: Date.now().toString(),
+        date,
+        durationMin,
+        score1,
+        score2,
+        score3,
+        score4,
+        note,
       };
 
-      // Lưu trực tiếp vào localStorage an toàn
-      const existingData = localStorage.getItem("nhat_khao_sessions");
-      const sessions: Session[] = existingData ? JSON.parse(existingData) : [];
-      sessions.unshift(sessionToSave);
-      localStorage.setItem("nhat_khao_sessions", JSON.stringify(sessions));
+      const existing = localStorage.getItem("nhat_khao_sessions");
+      const list: SessionData[] = existing ? JSON.parse(existing) : [];
+      list.unshift(newSession);
+      localStorage.setItem("nhat_khao_sessions", JSON.stringify(list));
 
-      // Hiển thị thông báo thành công tại chỗ, không dùng router navigate gây lỗi crash #185
-      setSuccessMsg(true);
-      setTimeout(() => setSuccessMsg(false), 4000);
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 3000);
 
-      // Reset lại phiếu mới
-      setDraft({
-        id: `${now.getTime().toString(36)}-${Math.random().toString(36).slice(2, 8)}`,
-        createdAt: now.toISOString(),
-        date: now.toISOString().slice(0, 10),
-        durationMin: 30,
-        scores: emptyScores(),
-        notes: emptyNotes(),
-        tong: "",
-      });
-    } catch (error) {
-      console.error("Lỗi:", error);
-      alert("Không thể lưu phiếu.");
+      // Reset form
+      setNote("");
+    } catch (e) {
+      console.error(e);
+      alert("Lỗi khi lưu dữ liệu.");
     }
   }
 
   return (
-    <main className="space-y-5">
-      {successMsg && (
-        <div className="rounded-md bg-green-100 border border-green-400 p-4 text-green-700 font-medium text-center">
-          Đã lưu phiếu nhật khảo thành công! Bạn có thể xem lại ở mục Lịch sử.
+    <main className="space-y-5 max-w-2xl mx-auto p-4">
+      {success && (
+        <div className="p-3 bg-green-100 text-green-800 rounded-md text-center font-medium border border-green-300">
+          Đã lưu phiếu thành công!
         </div>
       )}
 
-      <section className="rounded-lg border border-line bg-surface p-5">
-        <p className="font-han text-sm text-pine">每坐一考 · mỗi ngồi một khảo</p>
-        <h2 className="mt-1 font-display text-xl font-semibold">Phiếu nhật khảo</h2>
-        <p className="mt-2 max-w-prose text-sm leading-relaxed text-muted">
-          Chấm ngay sau khi xuống tọa. Cảnh khớp cổ tịch không đồng nghĩa đã kết đan. Bốn mục
-          then chốt giai đoạn Cam Lộ: nguồn khí, quy hạ đan, địa hộ, vô vi.
-        </p>
-        <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
+      <section className="rounded-lg border border-line bg-surface p-5 space-y-4">
+        <h2 className="text-xl font-semibold">Phiếu nhật khảo</h2>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <label className="block text-sm">
-            <span className="mb-1 block text-xs text-subtle">Ngày</span>
+            <span className="mb-1 block text-xs">Ngày</span>
             <input
               type="date"
-              value={draft.date}
-              onChange={(e) => setDraft({ ...draft, date: e.target.value })}
-              className="h-11 w-full rounded-md border border-line bg-bg px-3 text-ink outline-none focus:ring-2 focus:ring-pine/30"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              className="w-full p-2 border rounded bg-bg text-ink"
             />
           </label>
+
           <label className="block text-sm">
-            <span className="mb-1 block text-xs text-subtle">Thời lượng (phút)</span>
+            <span className="mb-1 block text-xs">Thời lượng (phút)</span>
             <input
               type="number"
-              min={1}
-              max={300}
-              value={draft.durationMin}
-              onChange={(e) =>
-                setDraft({ ...draft, durationMin: Number(e.target.value) || 0 })
-              }
-              className="h-11 w-full rounded-md border border-line bg-bg px-3 text-ink outline-none focus:ring-2 focus:ring-pine/30"
+              value={durationMin}
+              onChange={(e) => setDurationMin(Number(e.target.value))}
+              className="w-full p-2 border rounded bg-bg text-ink"
             />
           </label>
-          <div className="col-span-2 rounded-md border border-line bg-bg px-3 py-2 sm:col-span-1">
-            <p className="text-xs text-subtle">Chỉ số quy căn</p>
-            <p className="font-display text-2xl tabular-nums text-pine">{qc.toFixed(1)}</p>
-            <p className="text-xs text-muted">Trung bình 4 mục then chốt</p>
+
+          <div className="p-2 border rounded bg-bg flex flex-col justify-center">
+            <span className="text-xs text-gray-500">Chỉ số quy căn</span>
+            <span className="text-xl font-bold text-pine">{quyCan}</span>
           </div>
         </div>
       </section>
 
-      {CRITERIA.map((item) => (
-        <CriterionCard
-          key={item.id}
-          item={item}
-          score={draft.scores[item.id] ?? 0}
-          note={draft.notes[item.id] ?? ""}
-          onScore={(s: Score) =>
-            setDraft({ ...draft, scores: { ...draft.scores, [item.id]: s } })
-          }
-          onNote={(n) => setDraft({ ...draft, notes: { ...draft.notes, [item.id]: n } })}
-        />
-      ))}
+      {/* Mục 1 */}
+      <div className="p-4 border rounded bg-surface space-y-2">
+        <h3 className="font-medium">1. Nguồn khí</h3>
+        <div className="flex gap-2">
+          {[0, 1, 2, 3, 4, 5].map((s) => (
+            <button
+              key={s}
+              type="button"
+              onClick={() => setScore1(s)}
+              className={`w-9 h-9 rounded border ${score1 === s ? 'bg-pine text-white' : 'bg-bg'}`}
+            >
+              {s}
+            </button>
+          ))}
+        </div>
+      </div>
 
-      <label className="block">
-        <span className="mb-1.5 block text-sm font-medium text-ink">Tổng cảm buổi ngồi</span>
+      {/* Mục 2 */}
+      <div className="p-4 border rounded bg-surface space-y-2">
+        <h3 className="font-medium">2. Quy hạ đan</h3>
+        <div className="flex gap-2">
+          {[0, 1, 2, 3, 4, 5].map((s) => (
+            <button
+              key={s}
+              type="button"
+              onClick={() => setScore2(s)}
+              className={`w-9 h-9 rounded border ${score2 === s ? 'bg-pine text-white' : 'bg-bg'}`}
+            >
+              {s}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Mục 3 */}
+      <div className="p-4 border rounded bg-surface space-y-2">
+        <h3 className="font-medium">3. Địa hộ</h3>
+        <div className="flex gap-2">
+          {[0, 1, 2, 3, 4, 5].map((s) => (
+            <button
+              key={s}
+              type="button"
+              onClick={() => setScore3(s)}
+              className={`w-9 h-9 rounded border ${score3 === s ? 'bg-pine text-white' : 'bg-bg'}`}
+            >
+              {s}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Mục 4 */}
+      <div className="p-4 border rounded bg-surface space-y-2">
+        <h3 className="font-medium">4. Vô vi</h3>
+        <div className="flex gap-2">
+          {[0, 1, 2, 3, 4, 5].map((s) => (
+            <button
+              key={s}
+              type="button"
+              onClick={() => setScore4(s)}
+              className={`w-9 h-9 rounded border ${score4 === s ? 'bg-pine text-white' : 'bg-bg'}`}
+            >
+              {s}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="space-y-1">
+        <label className="text-sm font-medium">Tổng cảm buổi ngồi</label>
         <textarea
-          value={draft.tong}
-          onChange={(e) => setDraft({ ...draft, tong: e.target.value })}
-          rows={4}
-          className="w-full rounded-md border border-line bg-surface px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-pine/30"
-          placeholder="Một đoạn ngắn: khí từ đâu, về đâu, có cưỡng ý không."
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
+          rows={3}
+          className="w-full p-2 border rounded bg-surface text-ink"
+          placeholder="Nhập cảm nhận..."
         />
-      </label>
+      </div>
 
       <button
         type="button"
-        onClick={save}
-        className="h-12 w-full rounded-md bg-pine text-base font-medium text-pine-fg hover:opacity-90"
+        onClick={handleSave}
+        className="w-full py-3 bg-pine text-white rounded font-medium hover:opacity-90 transition"
       >
         Lưu phiếu này
       </button>
