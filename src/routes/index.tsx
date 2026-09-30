@@ -6,7 +6,6 @@ import {
   emptyNotes,
   emptyScores,
   quyCan,
-  upsertSession,
   type Session,
 } from "@/lib/journal";
 
@@ -43,21 +42,31 @@ function Home() {
   function save() {
     try {
       const now = new Date();
-      const sessionToSave = {
+      const sessionToSave: Session = {
         ...draft,
         id: draft.id === "draft" ? `${now.getTime().toString(36)}` : draft.id,
         createdAt: now.toISOString(),
         date: draft.date || now.toISOString().slice(0, 10),
       };
 
-      // Thực hiện lưu trữ dữ liệu an toàn
-      upsertSession(sessionToSave);
+      // Lưu trực tiếp vào localStorage một cách an toàn mà không qua hàm lỗi
+      const existingData = localStorage.getItem("nhat_khao_sessions");
+      const sessions: Session[] = existingData ? JSON.parse(existingData) : [];
+      
+      const index = sessions.findIndex((s) => s.id === sessionToSave.id);
+      if (index >= 0) {
+        sessions[index] = sessionToSave;
+      } else {
+        sessions.unshift(sessionToSave);
+      }
+      
+      localStorage.setItem("nhat_khao_sessions", JSON.stringify(sessions));
 
-      // Chuyển hướng sang trang lịch sử sau khi lưu thành công
+      // Chuyển hướng sang trang lịch sử
       void navigate({ to: "/lich-su" });
     } catch (error) {
-      console.error("Lỗi khi lưu phiên nhật khảo:", error);
-      alert("Đã xảy ra lỗi khi lưu phiếu. Vui lòng kiểm tra lại dữ liệu hoặc bộ nhớ trình duyệt.");
+      console.error("Lỗi khi lưu:", error);
+      alert("Không thể lưu phiếu do lỗi bộ nhớ trình duyệt.");
     }
   }
 
