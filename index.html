@@ -700,26 +700,31 @@
     const save = document.getElementById("btn-save");
     if (save) {
       save.addEventListener("click", () => {
-        const now = new Date();
-        upsertSession({
-          ...draft,
-          id: draft.id || uid(),
-          createdAt: now.toISOString(),
-          date: draft.date || today(),
-          scores: { ...draft.scores },
-          notes: { ...draft.notes }
-        });
-        // reset draft for next session
-        draft = {
-          id: uid(),
-          createdAt: "",
-          date: today(),
-          durationMin: 30,
-          scores: emptyScores(),
-          notes: emptyNotes(),
-          tong: ""
-        };
-        location.hash = "#/lich-su";
+        try {
+          const now = new Date();
+          const session = {
+            id: (draft.id && draft.id !== "draft") ? draft.id : uid(),
+            createdAt: now.toISOString(),
+            date: draft.date || today(),
+            durationMin: Number(draft.durationMin) || 30,
+            scores: Object.assign({}, draft.scores),
+            notes: Object.assign({}, draft.notes),
+            tong: draft.tong || ""
+          };
+          upsertSession(session);
+          draft = {
+            id: uid(),
+            createdAt: "",
+            date: today(),
+            durationMin: 30,
+            scores: emptyScores(),
+            notes: emptyNotes(),
+            tong: ""
+          };
+          location.hash = "#/lich-su";
+        } catch (err) {
+          alert("Không lưu được phiếu: " + (err && err.message ? err.message : String(err)));
+        }
       });
     }
   }
