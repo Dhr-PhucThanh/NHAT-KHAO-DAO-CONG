@@ -1,78 +1,61 @@
-import React, { useState } from 'react';
+import React from 'react';
+import type { Score } from '@/lib/criteria';
+
+interface CriterionItem {
+  id: string;
+  name: string;
+  desc?: string;
+  weight?: number;
+}
 
 interface CriterionCardProps {
-  initialTitle?: string;
-  initialContent?: string;
-  onSave?: (data: { title: string; content: string }) => void;
+  item: CriterionItem;
+  score: Score;
+  note: string;
+  onScore: (s: Score) => void;
+  onNote: (n: string) => void;
 }
 
 export const CriterionCard: React.FC<CriterionCardProps> = ({
-  initialTitle = '',
-  initialContent = '',
-  onSave,
+  item,
+  score,
+  note,
+  onScore,
+  onNote,
 }) => {
-  const [title, setTitle] = useState(initialTitle);
-  const [content, setContent] = useState(initialContent);
-  const [isSaved, setIsSaved] = useState(false);
-
-  // Hàm xử lý sự kiện bấm Lưu an toàn (Tránh hoàn toàn lỗi vòng lặp render #185)
-  const handleSaveClick = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // Thực hiện gọi hàm lưu truyền từ component cha nếu có
-    if (onSave) {
-      onSave({ title, content });
-    }
-
-    // Đánh dấu đã lưu thành công mà không gây trigger render lặp lại vô hạn
-    setIsSaved(true);
-    setTimeout(() => setIsSaved(false), 3000); // Ẩn thông báo sau 3 giây
-  };
+  const scores: Score[] = [0, 1, 2, 3, 4, 5];
 
   return (
-    <div className="p-4 bg-white rounded-lg shadow-md border border-gray-200 max-w-lg mx-auto my-4">
-      <h3 className="text-lg font-bold mb-3 text-gray-800">Phiếu Thông Tin - Nhật Khảo Đạo Công</h3>
-      
-      <form onSubmit={handleSaveClick}>
-        <div className="mb-3">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Tiêu đề:</label>
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Nhập tiêu đề phiếu..."
-            required
-          />
-        </div>
+    <div className="rounded-lg border border-line bg-surface p-4 space-y-3">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
+        <h3 className="font-display font-medium text-ink">{item.name}</h3>
+        {item.desc && <p className="text-xs text-muted">{item.desc}</p>}
+      </div>
 
-        <div className="mb-3">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Nội dung:</label>
-          <textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            rows={4}
-            placeholder="Nhập nội dung thông tin..."
-            required
-          />
-        </div>
-
-        <div className="flex items-center justify-between">
+      <div className="flex flex-wrap gap-2">
+        {scores.map((s) => (
           <button
-            type="submit"
-            className="px-4 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition"
+            key={s}
+            type="button"
+            onClick={() => onScore(s)}
+            className={`h-9 w-9 rounded-md border text-sm font-medium transition-colors ${
+              score === s
+                ? 'border-pine bg-pine text-pine-fg'
+                : 'border-line bg-bg text-ink hover:border-pine/50'
+            }`}
           >
-            Lưu Thông Tin
+            {s}
           </button>
+        ))}
+      </div>
 
-          {isSaved && (
-            <span className="text-green-600 text-sm font-medium animate-pulse">
-              Đã lưu thành công!
-            </span>
-          )}
-        </div>
-      </form>
+      <input
+        type="text"
+        value={note}
+        onChange={(e) => onNote(e.target.value)}
+        placeholder="Ghi chú chi tiết cho mục này..."
+        className="w-full rounded-md border border-line bg-bg px-3 py-2 text-sm text-ink outline-none focus:ring-2 focus:ring-pine/30"
+      />
     </div>
   );
 };
