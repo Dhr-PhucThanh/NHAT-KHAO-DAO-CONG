@@ -41,14 +41,24 @@ function Home() {
   const qc = useMemo(() => quyCan(draft), [draft]);
 
   function save() {
-    const now = new Date();
-    upsertSession({
-      ...draft,
-      id: draft.id === "draft" ? `${now.getTime().toString(36)}` : draft.id,
-      createdAt: now.toISOString(),
-      date: draft.date || now.toISOString().slice(0, 10),
-    });
-    void navigate({ to: "/lich-su" });
+    try {
+      const now = new Date();
+      const sessionToSave = {
+        ...draft,
+        id: draft.id === "draft" ? `${now.getTime().toString(36)}` : draft.id,
+        createdAt: now.toISOString(),
+        date: draft.date || now.toISOString().slice(0, 10),
+      };
+
+      // Thực hiện lưu trữ dữ liệu an toàn
+      upsertSession(sessionToSave);
+
+      // Chuyển hướng sang trang lịch sử sau khi lưu thành công
+      void navigate({ to: "/lich-su" });
+    } catch (error) {
+      console.error("Lỗi khi lưu phiên nhật khảo:", error);
+      alert("Đã xảy ra lỗi khi lưu phiếu. Vui lòng kiểm tra lại dữ liệu hoặc bộ nhớ trình duyệt.");
+    }
   }
 
   return (
