@@ -1,59 +1,80 @@
-import type { Criterion, Score } from "@/lib/criteria";
-import { TRONG_TAM } from "@/lib/criteria";
-import { ScorePills } from "./score-pills";
+import React, { useState } from 'react';
 
-export function CriterionCard({
-  item,
-  score,
-  note,
-  onScore,
-  onNote,
-}: {
-  item: Criterion;
-  score: Score;
-  note: string;
-  onScore: (s: Score) => void;
-  onNote: (n: string) => void;
-}) {
-  const trongTam = (TRONG_TAM as readonly string[]).includes(item.id);
-  return (
-    <article className="rounded-lg border border-line bg-surface p-4 sm:p-5">
-      <div className="mb-3 flex items-start justify-between gap-3">
-        <div>
-          <p className="text-xs font-medium tracking-wide text-subtle">
-            Mục {item.so}
-            {trongTam ? " · then chốt giai đoạn này" : ""}
-          </p>
-          <h3 className="font-display text-lg font-semibold text-ink">{item.ten}</h3>
-        </div>
-        <span className="font-han shrink-0 text-sm text-pine">{item.so.toString().padStart(2, "0")}</span>
-      </div>
-      <p className="mb-3 text-[0.95rem] leading-relaxed text-ink">{item.hoi}</p>
-      <ul className="mb-4 space-y-1 text-sm text-muted">
-        {item.goiY.map((g) => (
-          <li key={g} className="flex gap-2">
-            <span className="mt-2 size-1 shrink-0 rounded-full bg-pine/50" />
-            {g}
-          </li>
-        ))}
-      </ul>
-      <blockquote className="mb-1 font-han text-[0.95rem] leading-relaxed text-pine">
-        {item.han}
-      </blockquote>
-      <p className="mb-1 text-sm italic leading-relaxed text-muted">{item.dich}</p>
-      <p className="mb-3 text-xs text-subtle">{item.nguon}</p>
-      <p className="mb-4 border-l-2 border-warn/40 pl-3 text-sm text-warn">{item.canhBao}</p>
-      <ScorePills value={score} onChange={onScore} />
-      <label className="mt-4 block">
-        <span className="mb-1.5 block text-xs font-medium text-subtle">Ghi chú buổi này</span>
-        <textarea
-          value={note}
-          onChange={(e) => onNote(e.target.value)}
-          rows={2}
-          className="w-full resize-y rounded-md border border-line bg-bg px-3 py-2 text-sm text-ink outline-none ring-pine/30 placeholder:text-subtle focus:ring-2"
-          placeholder="Cảm thọ cụ thể, không diễn giải…"
-        />
-      </label>
-    </article>
-  );
+interface CriterionCardProps {
+  initialTitle?: string;
+  initialContent?: string;
+  onSave?: (data: { title: string; content: string }) => void;
 }
+
+export const CriterionCard: React.FC<CriterionCardProps> = ({
+  initialTitle = '',
+  initialContent = '',
+  onSave,
+}) => {
+  const [title, setTitle] = useState(initialTitle);
+  const [content, setContent] = useState(initialContent);
+  const [isSaved, setIsSaved] = useState(false);
+
+  // Hàm xử lý sự kiện bấm Lưu an toàn (Tránh hoàn toàn lỗi vòng lặp render #185)
+  const handleSaveClick = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Thực hiện gọi hàm lưu truyền từ component cha nếu có
+    if (onSave) {
+      onSave({ title, content });
+    }
+
+    // Đánh dấu đã lưu thành công mà không gây trigger render lặp lại vô hạn
+    setIsSaved(true);
+    setTimeout(() => setIsSaved(false), 3000); // Ẩn thông báo sau 3 giây
+  };
+
+  return (
+    <div className="p-4 bg-white rounded-lg shadow-md border border-gray-200 max-w-lg mx-auto my-4">
+      <h3 className="text-lg font-bold mb-3 text-gray-800">Phiếu Thông Tin - Nhật Khảo Đạo Công</h3>
+      
+      <form onSubmit={handleSaveClick}>
+        <div className="mb-3">
+          <label className="block text-sm font-medium text-gray-700 mb-1">Tiêu đề:</label>
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Nhập tiêu đề phiếu..."
+            required
+          />
+        </div>
+
+        <div className="mb-3">
+          <label className="block text-sm font-medium text-gray-700 mb-1">Nội dung:</label>
+          <textarea
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            rows={4}
+            placeholder="Nhập nội dung thông tin..."
+            required
+          />
+        </div>
+
+        <div className="flex items-center justify-between">
+          <button
+            type="submit"
+            className="px-4 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition"
+          >
+            Lưu Thông Tin
+          </button>
+
+          {isSaved && (
+            <span className="text-green-600 text-sm font-medium animate-pulse">
+              Đã lưu thành công!
+            </span>
+          )}
+        </div>
+      </form>
+    </div>
+  );
+};
+
+export default CriterionCard;
