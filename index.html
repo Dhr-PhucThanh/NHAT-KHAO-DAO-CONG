@@ -1,768 +1,216 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Nhật Khảo Đạo Công</title>
-  <meta name="description" content="Phiếu nhật khảo 10 mục đối chiếu công pháp Đạo gia với cổ tịch." />
-  <meta name="theme-color" content="#2f4a43" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,600;1,400&family=Noto+Serif+SC:wght@500;600&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --bg: #f3eee4;
-      --surface: #faf6ee;
-      --ink: #1c1915;
-      --muted: #6b645a;
-      --subtle: #8a8276;
-      --line: #d8d0c2;
-      --pine: #2f4a43;
-      --pine-fg: #f4efe4;
-      --warn: #8a3d32;
-      --font-display: "Noto Serif", "Noto Serif SC", serif;
-      --font-sans: "Source Sans 3", system-ui, sans-serif;
-      --font-han: "Noto Serif SC", "Noto Serif", serif;
-      --radius: 14px;
-    }
-    * { box-sizing: border-box; }
-    html, body {
-      margin: 0;
-      padding: 0;
-      background: var(--bg);
-      color: var(--ink);
-      font-family: var(--font-sans);
-      min-height: 100dvh;
-      line-height: 1.5;
-    }
-    button, [role="button"] { cursor: pointer; }
-    a { color: inherit; text-decoration: none; }
-    .wrap {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 1.25rem 1rem 4rem;
-    }
-    header {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 1rem;
-      border-bottom: 1px solid var(--line);
-      padding-bottom: 1rem;
-      margin-bottom: 1.25rem;
-      flex-wrap: wrap;
-    }
-    .brand-han {
-      font-family: var(--font-han);
-      font-size: 0.875rem;
-      letter-spacing: 0.2em;
-      color: var(--pine);
-      margin: 0;
-    }
-    h1 {
-      font-family: var(--font-display);
-      font-size: 1.5rem;
-      font-weight: 600;
-      margin: 0.15rem 0 0;
-      letter-spacing: -0.02em;
-    }
-    nav {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem 1rem;
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: var(--muted);
-    }
-    nav a.active { color: var(--pine); }
-    nav a:hover { color: var(--ink); }
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 1.1rem 1.15rem;
-      margin-bottom: 0.9rem;
-    }
-    .card h2, .card h3 {
-      font-family: var(--font-display);
-      margin: 0.2rem 0 0.4rem;
-    }
-    .muted { color: var(--muted); }
-    .subtle { color: var(--subtle); font-size: 0.8rem; }
-    .pine { color: var(--pine); }
-    .warn { color: var(--warn); }
-    .han {
-      font-family: var(--font-han);
-      color: var(--pine);
-      line-height: 1.55;
-    }
-    .grid-3 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.75rem;
-      margin-top: 1rem;
-    }
-    @media (min-width: 560px) {
-      .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
-    }
-    label.field { display: block; font-size: 0.9rem; }
-    label.field span {
-      display: block;
-      font-size: 0.75rem;
-      color: var(--subtle);
-      margin-bottom: 0.3rem;
-    }
-    input, textarea {
-      width: 100%;
-      border: 1px solid var(--line);
-      background: var(--bg);
-      color: var(--ink);
-      border-radius: 8px;
-      padding: 0.6rem 0.75rem;
-      font: inherit;
-      outline: none;
-    }
-    input:focus, textarea:focus {
-      border-color: color-mix(in oklab, var(--pine) 45%, var(--line));
-      box-shadow: 0 0 0 3px color-mix(in oklab, var(--pine) 18%, transparent);
-    }
-    textarea { resize: vertical; min-height: 4.5rem; }
-    .stat-box {
-      border: 1px solid var(--line);
-      background: var(--bg);
-      border-radius: 8px;
-      padding: 0.55rem 0.75rem;
-    }
-    .stat-box strong {
-      font-family: var(--font-display);
-      font-size: 1.5rem;
-      color: var(--pine);
-      font-variant-numeric: tabular-nums;
-    }
-    .pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-    }
-    .pill {
-      min-height: 2.5rem;
-      border: 1px solid var(--line);
-      background: var(--surface);
-      color: var(--muted);
-      border-radius: 999px;
-      padding: 0.35rem 0.75rem;
-      font-size: 0.875rem;
-      font-weight: 500;
-    }
-    .pill.active {
-      background: var(--pine);
-      border-color: var(--pine);
-      color: var(--pine-fg);
-    }
-    .pill.active.warn-pill {
-      background: var(--warn);
-      border-color: var(--warn);
-    }
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 2.75rem;
-      border: none;
-      border-radius: 8px;
-      padding: 0.6rem 1.1rem;
-      font: inherit;
-      font-weight: 500;
-    }
-    .btn-primary {
-      width: 100%;
-      background: var(--pine);
-      color: var(--pine-fg);
-      margin-top: 0.5rem;
-    }
-    .btn-primary:hover { opacity: 0.92; }
-    .btn-danger {
-      border: 1px solid color-mix(in oklab, var(--warn) 40%, var(--line));
-      background: transparent;
-      color: var(--warn);
-      font-size: 0.875rem;
-    }
-    .meta-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 0.75rem;
-    }
-    ul.hint {
-      margin: 0.4rem 0 0.8rem;
-      padding: 0;
-      list-style: none;
-      font-size: 0.875rem;
-      color: var(--muted);
-    }
-    ul.hint li {
-      display: flex;
-      gap: 0.5rem;
-      margin-bottom: 0.2rem;
-    }
-    ul.hint li::before {
-      content: "";
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      background: color-mix(in oklab, var(--pine) 50%, transparent);
-      margin-top: 0.55rem;
-      flex-shrink: 0;
-    }
-    .warn-box {
-      border-left: 2px solid color-mix(in oklab, var(--warn) 45%, transparent);
-      padding-left: 0.75rem;
-      font-size: 0.875rem;
-      color: var(--warn);
-      margin: 0.5rem 0 0.9rem;
-    }
-    .list-link {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.85rem 1rem;
-      border: 1px solid var(--line);
-      background: var(--surface);
-      border-radius: 10px;
-      margin-bottom: 0.5rem;
-    }
-    .list-link:hover { border-color: color-mix(in oklab, var(--pine) 40%, var(--line)); }
-    .bars { display: flex; align-items: flex-end; gap: 3px; height: 7rem; margin-top: 0.75rem; }
-    .bar {
-      flex: 1;
-      background: var(--pine);
-      border-radius: 2px 2px 0 0;
-      min-height: 6px;
-    }
-    .progress {
-      height: 6px;
-      background: var(--line);
-      border-radius: 999px;
-      overflow: hidden;
-      margin-bottom: 0.65rem;
-    }
-    .progress > i {
-      display: block;
-      height: 100%;
-      background: var(--pine);
-    }
-    .empty {
-      text-align: center;
-      padding: 3rem 1rem;
-      border: 1px dashed var(--line);
-      border-radius: var(--radius);
-      background: var(--surface);
-    }
-    .hidden { display: none !important; }
-    blockquote {
-      margin: 0.5rem 0;
-      font-family: var(--font-han);
-      color: var(--pine);
-      font-size: 0.95rem;
-    }
-  </style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Nhật Khảo Đạo Công</title>
+<meta name="theme-color" content="#2f4a43"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;600&family=Noto+Serif+SC:wght@500;600&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#f3eee4;--surface:#faf6ee;--ink:#1c1915;--muted:#6b645a;--subtle:#8a8276;--line:#d8d0c2;--pine:#2f4a43;--pine-fg:#f4efe4;--warn:#8a3d32;--fd:"Noto Serif","Noto Serif SC",serif;--fs:"Source Sans 3",system-ui,sans-serif;--fh:"Noto Serif SC","Noto Serif",serif}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--fs);min-height:100dvh;line-height:1.5}
+button{cursor:pointer;font-family:inherit}a{color:inherit;text-decoration:none}
+.wrap{max-width:720px;margin:0 auto;padding:1.25rem 1rem 4rem}
+header{display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;border-bottom:1px solid var(--line);padding-bottom:1rem;margin-bottom:1.25rem;flex-wrap:wrap}
+.brand{font-family:var(--fh);font-size:.875rem;letter-spacing:.2em;color:var(--pine);margin:0}
+h1{font-family:var(--fd);font-size:1.5rem;font-weight:600;margin:.15rem 0 0}
+nav{display:flex;flex-wrap:wrap;gap:.75rem 1rem;font-size:.9rem;font-weight:500;color:var(--muted)}
+nav a.active{color:var(--pine);font-weight:600}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1.1rem 1.15rem;margin-bottom:.9rem}
+.card h2,.card h3{font-family:var(--fd);margin:.2rem 0 .4rem}
+.muted{color:var(--muted)}.subtle{color:var(--subtle);font-size:.8rem}.pine{color:var(--pine)}.warn{color:var(--warn)}
+.han{font-family:var(--fh);color:var(--pine);line-height:1.55}
+.grid3{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:1rem}
+@media(min-width:560px){.grid3{grid-template-columns:1fr 1fr 1fr}}
+label.f{display:block;font-size:.9rem}label.f>span{display:block;font-size:.75rem;color:var(--subtle);margin-bottom:.3rem}
+input,textarea{width:100%;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;padding:.6rem .75rem;font:inherit;outline:none}
+input:focus,textarea:focus{border-color:#2f4a4370;box-shadow:0 0 0 3px #2f4a4328}
+textarea{resize:vertical}
+.stat{border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:.55rem .75rem}
+.stat strong{font-family:var(--fd);font-size:1.5rem;color:var(--pine);font-variant-numeric:tabular-nums}
+.pills{display:flex;flex-wrap:wrap;gap:.4rem}
+.pill{min-height:2.5rem;border:1px solid var(--line);background:var(--bg);color:var(--muted);border-radius:999px;padding:.35rem .75rem;font-size:.875rem;font-weight:500}
+.pill.on{background:var(--pine);border-color:var(--pine);color:var(--pine-fg)}
+.pill.on.bad{background:var(--warn);border-color:var(--warn)}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:2.75rem;border:none;border-radius:8px;padding:.6rem 1.1rem;font:inherit;font-weight:500}
+.btn-p{width:100%;background:var(--pine);color:var(--pine-fg);margin-top:.5rem}.btn-p:hover{opacity:.92}
+.btn-d{border:1px solid #8a3d3266;background:transparent;color:var(--warn);font-size:.875rem}
+.row{display:flex;justify-content:space-between;align-items:flex-start;gap:.75rem}
+ul.hint{margin:.4rem 0 .8rem;padding:0;list-style:none;font-size:.875rem;color:var(--muted)}
+ul.hint li{display:flex;gap:.5rem;margin-bottom:.2rem}
+ul.hint li::before{content:"";width:4px;height:4px;border-radius:50%;background:#2f4a4380;margin-top:.55rem;flex-shrink:0}
+.wb{border-left:2px solid #8a3d3270;padding-left:.75rem;font-size:.875rem;color:var(--warn);margin:.5rem 0 .9rem}
+.ll{display:flex;justify-content:space-between;align-items:center;gap:.75rem;padding:.85rem 1rem;border:1px solid var(--line);background:var(--surface);border-radius:10px;margin-bottom:.5rem}
+.bars{display:flex;align-items:flex-end;gap:3px;height:7rem;margin-top:.75rem}
+.bar{flex:1;background:var(--pine);border-radius:2px 2px 0 0;min-height:6px}
+.prog{height:6px;background:var(--line);border-radius:999px;overflow:hidden;margin-bottom:.65rem}
+.prog>i{display:block;height:100%;background:var(--pine)}
+.empty{text-align:center;padding:3rem 1rem;border:1px dashed var(--line);border-radius:14px;background:var(--surface)}
+.toast{position:fixed;bottom:1.25rem;left:50%;transform:translateX(-50%);background:var(--pine);color:var(--pine-fg);padding:.65rem 1.25rem;border-radius:999px;font-size:.9rem;font-weight:500;opacity:0;pointer-events:none;transition:opacity .25s;z-index:50}
+.toast.show{opacity:1}
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <a href="#/" data-nav>
-        <p class="brand-han">日考道功</p>
-        <h1>Nhật Khảo Đạo Công</h1>
-      </a>
-      <nav>
-        <a href="#/" data-nav data-route="/">Phiếu mới</a>
-        <a href="#/lich-su" data-nav data-route="/lich-su">Lịch sử</a>
-        <a href="#/xu-huong" data-nav data-route="/xu-huong">Xu hướng</a>
-        <a href="#/can-cu" data-nav data-route="/can-cu">Căn cứ</a>
-      </nav>
-    </header>
-    <main id="app"></main>
-  </div>
+<div class="wrap">
+<header>
+<a href="#/"><p class="brand">日考道功</p><h1>Nhật Khảo Đạo Công</h1></a>
+<nav>
+<a href="#/" data-r="/">Phiếu mới</a>
+<a href="#/lich-su" data-r="/lich-su">Lịch sử</a>
+<a href="#/xu-huong" data-r="/xu-huong">Xu hướng</a>
+<a href="#/can-cu" data-r="/can-cu">Căn cứ</a>
+</nav>
+</header>
+<main id="app"></main>
+</div>
+<div id="toast" class="toast"></div>
+<script>
+(function(){
+"use strict";
+var KEY="daogong-nhatkhao-v1";
+var LABELS={0:"Chưa rõ",1:"Lệch",2:"Sơ khởi",3:"Khớp",4:"Vững"};
+var CORE=["nguon-khi","ha-dan","dia-ho","vo-vi"];
+var C=[
+{id:"nguon-khi",so:1,ten:"Nguồn khí Cam Lộ",hoi:"Khí mát từ trong đỉnh sinh rồi xuống, hay như bị rót từ ngoài vào?",goiY:["Từ trong mở ra, thấm mát rồi giáng","Không phân biệt được","Cảm như từ ngoài đỉnh tràn vào"],han:"自內而開出者真，自外而開入者幻。",dich:"Từ trong mở ra thì chân; từ ngoài mở vào thì ảo.",nguon:"Mẫn Nhất Đắc · Quan Khiếu Yếu Chỉ",cb:"Nếu khí luôn như bị rót từ ngoài: ghi Lệch, đừng cưỡng mở thêm."},
+{id:"thien-mon",so:2,ten:"Thiên Môn / Bách Hội",hoi:"Đỉnh đầu mát, thông, không căng nóng?",goiY:["Mát, thấm, nhẹ","Có lúc mát có lúc căng","Nóng, căng, nhức kéo dài"],han:"頂則露灑崑崙……甘霖霈灑，流池若注，味香而甜。",dich:"Đỉnh thì sương rưới Côn Lôn… cam lâm đổ như rót, vị thơm mà ngọt.",nguon:"Mẫn Nhất Đắc · Quan Khiếu Yếu Chỉ",cb:"Nóng căng kéo dài là tiến hỏa lệch, không phải Cam Lộ."},
+{id:"ne-hoan",so:3,ten:"Nê Hoàn hư linh",hoi:"Bên trong đầu rỗng, thần sáng, không hôn trầm?",goiY:["Rỗng mà tỉnh","Rỗng xen mơ màng","Nặng đầu, hôn trầm"],han:"天谷元神，守之自真。天谷者，泥丸宮也。",dich:"Thiên Cốc nguyên thần, giữ thì tự chân. Thiên Cốc tức Nê Hoàn cung.",nguon:"Hệ Hoàng Đình / nội đan",cb:"Rỗng mà hôn mê khác hư linh. Hư linh phải tỉnh."},
+{id:"chuoi-dinh-gay",so:4,ten:"Chuỗi đỉnh–gáy (Ấn Đường → Á Môn)",hoi:"Ấn Đường, Não Hộ, Phong Phủ, Ngọc Chẩm, Á Môn có nối thông nhau?",goiY:["Cả chuỗi thông êm","Thông từng đoạn, chưa liền","Kẹt gáy / Á Môn / nóng đỉnh"],han:"夾脊雙關透頂門。天門常開。",dich:"Giáp tích song quan thấu đỉnh môn. Thiên Môn thường mở.",nguon:"Hệ Đốc mạch / Quan Khiếu",cb:"Thông chuỗi đỉnh–gáy tốt cho tầng trên; vẫn cần đường về hạ đan."},
+{id:"dai-chuy-thien-dot",so:5,ten:"Đại Chùy – Thiên Đột",hoi:"Vùng Đại Chùy (sau) và Thiên Đột (trước) có nối thông?",goiY:["Trước–sau cổ thông, thở êm","Có cảm nhưng lệch một bên","Tắc, tức cổ, khó thở"],han:"任督二脈為諸脈之綱領。",dich:"Nhâm–Đốc là cương lĩnh của các mạch.",nguon:"Kỳ kinh bát mạch / nội đan",cb:"Thông cặp này hỗ trợ tiểu chu thiên; chưa đủ kết luận tủy đạo đã thông."},
+{id:"dan-trung-linh-dai",so:6,ten:"Đản Trung – Linh Đài",hoi:"Ngực trước (Đản Trung) và lưng giữa (Linh Đài) có hòa thông?",goiY:["Ngực–lưng êm, không tức","Thông từng lúc","Tức ngực, nóng lưng lệch"],han:"膻中者，為氣之海。",dich:"Đản Trung là biển khí.",nguon:"Linh Khu · Hải Luận",cb:"Kẹt tầng giữa dễ làm khí không giáng về hạ đan."},
+{id:"than-khuyet-menh-mon",so:7,ten:"Thần Khuyết – Mệnh Môn",hoi:"Rốn (Thần Khuyết) và Mệnh Môn (lưng dưới) có thông, ấm?",goiY:["Trước–sau dưới ấm, thông","Một bên ấm một bên lạnh","Cả hai lạnh / tắc"],han:"命門者，諸神精之所舍，原氣之所繫也。",dich:"Mệnh Môn là chỗ các thần tinh ở, nơi nguyên khí bám.",nguon:"Nội kinh / nội đan",cb:"Tầng dưới là gốc mệnh; yếu ở đây thì khí trên dễ phù."},
+{id:"lao-cung-dung-tuyen",so:8,ten:"Lao Cung & Dũng Tuyền",hoi:"Khí phóng ra lòng bàn tay (Lao Cung) và lòng bàn chân (Dũng Tuyền), có thu về được không?",goiY:["Phóng ra rồi thu về đan điền","Phóng mạnh, thu yếu","Chỉ phóng ra, không về"],han:"上通泥丸，下透湧泉。真人之息以踵。",dich:"Trên thông Nê Hoàn, dưới thấu Dũng Tuyền. Chân nhân thở đến gót.",nguon:"Bát Mạch Kinh / Trang Tử",cb:"Phóng ra mắt, tay, chân mà không thu = tiết khí."},
+{id:"phong-mat",so:9,ten:"Phóng khí qua mắt & Mắt 3",hoi:"Có cảm giác khí / ánh sáng phóng ra mắt thường hoặc Ấn Đường (Mắt 3)? Có bị kéo theo không?",goiY:["Có phóng nhưng thu lại được, thần không tán","Phóng mạnh, dễ bị quang kéo","Loạn thị, đuổi theo ánh sáng"],han:"一面之神宗泥丸。",dich:"Thần của mặt lấy Nê Hoàn làm tông — phải quy về, không đuổi ra ngoài.",nguon:"Hoàng Đình Nội Cảnh",cb:"Phóng qua mắt / Mắt 3 là cảnh khai khiếu; đuổi theo quang là tán thần."},
+{id:"phong-nang-long",so:10,ten:"Phóng khí qua nang lông / da",hoi:"Khí phóng qua lỗ chân lông, lan bề mặt da toàn thân? Sau đó có thu không?",goiY:["Lan da rồi thu về gốc","Lan mạnh, thu chậm","Chỉ xì ra da, trong rỗng"],han:"八萬四千毫竅……一竅開百竅齊開。",dich:"Tám vạn bốn nghìn mao khiếu… một khiếu mở thì trăm khiếu cùng mở.",nguon:"Mẫn Nhất Đắc · Quan Khiếu Yếu Chỉ",cb:"Phóng nang lông là cảnh bách khiếu; thiếu thu về hạ đan thì dễ tán."},
+{id:"ha-dan",so:11,ten:"Quy căn Hạ Đan",hoi:"Sau khi khí lên đỉnh / phóng ra da–mắt–tay–chân, bụng dưới có ấm và có chỗ về?",goiY:["Hạ đan ấm, vững, khí có nhà","Ấm lúc được lúc mất","Đầu đầy / da đầy, bụng rỗng"],han:"自上田復下田。化為甘露，降下重樓，復歸坤位。",dich:"Từ thượng điền trở lại hạ điền. Hóa Cam Lộ, xuống Trùng Lâu, về vị Khôn.",nguon:"Chung Lã / Tính Mệnh Khuê Chỉ",cb:"Then chốt: có phóng phải có đường về hạ đan."},
+{id:"dia-ho",so:12,ten:"Địa Hộ bế",hoi:"Gốc dưới kín: không tiết tinh, không khí hạ trệ, không mất gốc?",goiY:["Kín, an, khí không lậu","Hơi không vững","Tiết, nóng hạ tiêu, mất gốc"],han:"天門常開，地戶永閉。",dich:"Thiên Môn thường mở, Địa Hộ mãi đóng.",nguon:"Hệ Bát mạch / nội đan",cb:"Đỉnh mở mà địa hộ không bế là lệch mệnh công."},
+{id:"vo-vi",so:13,ten:"Hữu vi / vô vi",hoi:"Buổi này có cưỡng ý dẫn khí, đuổi cảnh, tiến hỏa không?",goiY:["Quên rồi lại quên, khí tự vận","Có dẫn nhẹ rồi buông","Cưỡng dẫn, đuổi quang, thổi hỏa"],han:"自有天然真火候，不須柴炭及吹噓。",dich:"Sẵn hỏa hầu trời sinh, không cần củi than và thổi.",nguon:"Ngộ Chân Thiên",cb:"Cam Lộ giai đoạn này: cổ tịch bảo vô vi, đừng tiến hỏa."}
+];
 
-  <script>
-(function () {
-  const KEY = "daogong-nhatkhao-v1";
-  const SCORE_LABELS = { 0: "Chưa rõ", 1: "Lệch", 2: "Sơ khởi", 3: "Khớp", 4: "Vững" };
+function load(){try{var r=localStorage.getItem(KEY);if(!r)return[];var p=JSON.parse(r);return Array.isArray(p)?p.sort(function(a,b){return b.createdAt.localeCompare(a.createdAt)}):[]}catch(e){return[]}}
+function saveAll(list){localStorage.setItem(KEY,JSON.stringify(list))}
+function upsert(s){var all=load().filter(function(x){return x.id!==s.id});all.unshift(s);saveAll(all)}
+function del(id){saveAll(load().filter(function(x){return x.id!==id}))}
+function mean(vals){var n=0,t=0;for(var i=0;i<vals.length;i++){if(vals[i]>0){t+=vals[i];n++}}return n?t/n:0}
+function quyCan(s){return mean(CORE.map(function(id){return s.scores[id]||0}))}
+function avg(s){return mean(C.map(function(c){return s.scores[c.id]||0}))}
+function uid(){return Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,8)}
+function today(){return new Date().toISOString().slice(0,10)}
+function emptyScores(){var o={};C.forEach(function(c){o[c.id]=0});return o}
+function emptyNotes(){var o={};C.forEach(function(c){o[c.id]=""});return o}
+function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+function toast(msg){var el=document.getElementById("toast");el.textContent=msg;el.classList.add("show");setTimeout(function(){el.classList.remove("show")},1800)}
 
-  const CRITERIA = [
-    {
-      id: "nguon-khi", so: 1, ten: "Nguồn khí Cam Lộ",
-      hoi: "Khí mát từ trong đỉnh sinh rồi xuống, hay như bị rót từ ngoài vào?",
-      goiY: ["Từ trong mở ra, thấm mát rồi giáng", "Không phân biệt được", "Cảm như ánh sáng / khí từ ngoài đỉnh tràn vào"],
-      han: "自內而開出者真，自外而開入者幻。",
-      dich: "Từ trong mở ra thì chân; từ ngoài mở vào thì ảo.",
-      nguon: "Mẫn Nhất Đắc · Quan Khiếu Yếu Chỉ",
-      canhBao: "Nếu khí luôn như bị rót từ ngoài: ghi lệch, đừng cưỡng mở thêm."
-    },
-    {
-      id: "thien-mon", so: 2, ten: "Thiên Môn / Bách Hội",
-      hoi: "Đỉnh đầu mát, thông, không căng nóng?",
-      goiY: ["Mát, thấm, nhẹ", "Có lúc mát có lúc căng", "Nóng, căng, nhức kéo dài"],
-      han: "頂則露灑崑崙……甘霖霈灑，流池若注，味香而甜。",
-      dich: "Đỉnh thì sương rưới Côn Lôn… cam lâm đổ như rót, vị thơm mà ngọt.",
-      nguon: "Mẫn Nhất Đắc · Quan Khiếu Yếu Chỉ",
-      canhBao: "Nóng căng kéo dài là tiến hỏa lệch, không phải Cam Lộ."
-    },
-    {
-      id: "ne-hoan", so: 3, ten: "Nê Hoàn hư linh",
-      hoi: "Bên trong đầu có cảm giác rỗng, thần sáng, không hôn trầm?",
-      goiY: ["Rỗng mà tỉnh", "Rỗng xen mơ màng", "Nặng đầu, hôn trầm, choáng"],
-      han: "天谷元神，守之自真。天谷者，泥丸宮也……空洞之界也。",
-      dich: "Thiên Cốc nguyên thần, giữ thì tự chân. Thiên Cốc tức Nê Hoàn… cõi trống rỗng.",
-      nguon: "Chú Đạo Đức / Linh Khu",
-      canhBao: "Rỗng mà hôn mê khác với hư linh. Hư linh phải tỉnh."
-    },
-    {
-      id: "luc-can", so: 4, ten: "Lục căn + Mắt 3",
-      hoi: "Mắt tai mũi lưỡi xúc ý / Mắt 3 mở nhưng không bị quang–thanh kéo tán?",
-      goiY: ["Mở mà thu, không đuổi cảnh", "Mở rồi bị quang/tiếng kéo", "Bế hoặc loạn"],
-      han: "一面之神宗泥丸。一根既返本，六根成解脫。",
-      dich: "Các thần của mặt tôn Nê Hoàn làm tông. Một căn về gốc thì sáu căn giải thoát.",
-      nguon: "Hoàng Đình Nội Cảnh · Tịnh Hư Tử",
-      canhBao: "Khai căn rồi đuổi theo ảo quang là tán thần, không phải giải thoát."
-    },
-    {
-      id: "tam-truc", so: 5, ten: "Ba trục Nhâm–Đốc",
-      hoi: "Đại Chùy–Thiên Đột, Đản Trung–Linh Đài, Thần Khuyết–Mệnh Môn có thông, không kẹt?",
-      goiY: ["Ba tầng trước–sau đều thông", "Một–hai cặp thông", "Kẹt cổ / ngực / lưng"],
-      han: "膻中者，為氣之海。丹田有三：上田神舍，中田氣府，下田精區。",
-      dich: "Đản Trung là biển khí. Ba đan điền: thượng nhà thần, trung phủ khí, hạ khu tinh.",
-      nguon: "Linh Khu · Hải Luận / Chung Lã Truyền Đạo Tập",
-      canhBao: "Thông một tầng trên mà kẹt dưới là khí phù."
-    },
-    {
-      id: "tu-chi", so: 6, ten: "Lao Cung & Dũng Tuyền",
-      hoi: "Khí ra được hai lòng bàn tay–chân, và thu về được không?",
-      goiY: ["Ra rồi thu về đan điền", "Ra mạnh, thu yếu", "Chỉ xì ra, không về"],
-      han: "上通泥丸，下透湧泉。真人之息以踵。",
-      dich: "Trên thông Nê Hoàn, dưới thấu Dũng Tuyền. Chân nhân thở đến gót.",
-      nguon: "Bát Mạch Kinh / Trang Tử",
-      canhBao: "Chỉ ra không thu = khí tiết, không phải công thành."
-    },
-    {
-      id: "mao-khieu", so: 7, ten: "Mao khiếu / lớp da",
-      hoi: "Toàn thân lỗ lông / bề mặt da có khí, như sâu bò, mát lan?",
-      goiY: ["Lan đều rồi thu", "Lan mạnh ở da, trong rỗng", "Không có / chỉ nóng rát"],
-      han: "八萬四千毫竅、三百六十骨節一齊爆開。一竅開百竅齊開。",
-      dich: "Tám vạn bốn nghìn lỗ lông, ba trăm sáu mươi đốt xương cùng mở. Một khiếu mở thì trăm khiếu mở.",
-      nguon: "Mẫn Nhất Đắc · Quan Khiếu Yếu Chỉ",
-      canhBao: "Khí chỉ ở da mà bụng rỗng là tán, chưa quy căn."
-    },
-    {
-      id: "ha-dan", so: 8, ten: "Quy căn Hạ Đan",
-      hoi: "Sau khi khí lên đỉnh / ra da, bụng dưới ấm, có chỗ về?",
-      goiY: ["Hạ đan ấm, vững, khí có nhà", "Ấm lúc được lúc mất", "Đầu đầy, bụng rỗng"],
-      han: "自上田復下田。化為甘露，降下重樓，復歸坤位。",
-      dich: "Từ thượng điền trở lại hạ điền. Hóa Cam Lộ, xuống Trùng Lâu, về vị Khôn.",
-      nguon: "Chung Lã / Tính Mệnh Khuê Chỉ",
-      canhBao: "Đây là tiêu chí then chốt giai đoạn của bạn. Không về hạ đan thì chưa hoàn lộ."
-    },
-    {
-      id: "dia-ho", so: 9, ten: "Địa Hộ bế",
-      hoi: "Gốc dưới kín: không tiết tinh, không khí hạ trệ, không mất gốc?",
-      goiY: ["Kín, an, khí không lậu", "Hơi không vững", "Tiết, nóng hạ tiêu, mất gốc"],
-      han: "天門常開，地戶永閉。閉塞命門保玉都。",
-      dich: "Thiên Môn thường mở, Địa Hộ mãi đóng. Đóng kín Mệnh Môn, giữ Ngọc Đô.",
-      nguon: "Bát Mạch Kinh / Hoàng Đình",
-      canhBao: "Đỉnh mở mà địa hộ không bế là lệch mệnh công."
-    },
-    {
-      id: "vo-vi", so: 10, ten: "Hữu vi / vô vi",
-      hoi: "Buổi này có cưỡng ý dẫn khí, đuổi cảnh, tiến hỏa không?",
-      goiY: ["Quên rồi lại quên, khí tự vận", "Có dẫn nhẹ rồi buông", "Cưỡng dẫn, đuổi quang, thổi hỏa"],
-      han: "自有天然真火候，不須柴炭及吹噓。忘而又忘，玄關斯闢。",
-      dich: "Sẵn hỏa hầu trời sinh, không cần củi than và thổi. Quên rồi lại quên, Huyền Quan mới mở.",
-      nguon: "Ngộ Chân Thiên / Quan Khiếu Yếu Chỉ",
-      canhBao: "Giai đoạn Cam Lộ: cổ tịch bảo thoái phù, đừng tiến hỏa."
-    }
-  ];
+var draft={id:uid(),createdAt:"",date:today(),durationMin:30,scores:emptyScores(),notes:emptyNotes(),tong:""};
 
-  const TRONG_TAM = ["ha-dan", "dia-ho", "vo-vi", "nguon-khi"];
+function route(){var h=(location.hash||"#/").replace(/^#/,"");var p=h.split("/").filter(Boolean);if(!p.length)return{n:"home"};if(p[0]==="lich-su")return{n:"history"};if(p[0]==="xu-huong")return{n:"trends"};if(p[0]==="can-cu")return{n:"canon"};if(p[0]==="phien"&&p[1])return{n:"detail",id:decodeURIComponent(p[1])};return{n:"home"}}
 
-  const GIAI_DOAN = [
-    { han: "鍊形成氣，鍊氣成神，鍊神合道。", dich: "Luyện hình thành khí, luyện khí thành thần, luyện thần hợp đạo.", nguon: "Chung Lã Truyền Đạo Tập" },
-    { han: "自下田入上田，自上田復下田。", dich: "Từ hạ điền vào thượng điền, từ thượng điền trở lại hạ điền.", nguon: "Chung Lã · Luận hoàn đan" },
-    { han: "醍醐灌頂，甘露灑心。此乃真景象也，非譬喻也。", dich: "Đề hồ quán đỉnh, Cam Lộ rưới tâm. Đây là cảnh thật, không phải thí dụ.", nguon: "Tính Mệnh Khuê Chỉ" },
-    { han: "咽津納氣是人行……鼎內若無真種子，猶將水火煮空鐺。", dich: "Nuốt tân nạp khí là việc người thường. Đỉnh không hạt giống thật khác gì đun chảo không.", nguon: "Ngộ Chân Thiên" }
-  ];
+function setNav(){var r=route();document.querySelectorAll("nav a").forEach(function(a){var path=a.getAttribute("data-r");var on=false;if(path==="/"&&r.n==="home")on=true;if(path==="/lich-su"&&(r.n==="history"||r.n==="detail"))on=true;if(path==="/xu-huong"&&r.n==="trends")on=true;if(path==="/can-cu"&&r.n==="canon")on=true;a.classList.toggle("active",on)})}
 
-  function loadSessions() {
-    try {
-      const raw = localStorage.getItem(KEY);
-      if (!raw) return [];
-      const parsed = JSON.parse(raw);
-      return Array.isArray(parsed) ? parsed.sort((a, b) => b.createdAt.localeCompare(a.createdAt)) : [];
-    } catch { return []; }
-  }
-  function saveSessions(list) {
-    localStorage.setItem(KEY, JSON.stringify(list));
-  }
-  function upsertSession(s) {
-    const all = loadSessions().filter((x) => x.id !== s.id);
-    all.unshift(s);
-    saveSessions(all);
-  }
-  function deleteSession(id) {
-    saveSessions(loadSessions().filter((x) => x.id !== id));
-  }
-  function mean(vals) {
-    const n = vals.filter((v) => v > 0).length;
-    if (!n) return 0;
-    return vals.reduce((a, b) => a + b, 0) / n;
-  }
-  function quyCan(s) {
-    return mean(TRONG_TAM.map((id) => s.scores[id] || 0));
-  }
-  function average(s) {
-    return mean(CRITERIA.map((c) => s.scores[c.id] || 0));
-  }
-  function uid() {
-    return Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 8);
-  }
-  function today() {
-    return new Date().toISOString().slice(0, 10);
-  }
-  function emptyScores() {
-    const o = {};
-    CRITERIA.forEach((c) => { o[c.id] = 0; });
-    return o;
-  }
-  function emptyNotes() {
-    const o = {};
-    CRITERIA.forEach((c) => { o[c.id] = ""; });
-    return o;
-  }
-  function escapeHtml(str) {
-    return String(str || "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;");
-  }
-
-  // ---- draft state for form ----
-  let draft = {
-    id: uid(),
-    createdAt: "",
-    date: today(),
-    durationMin: 30,
-    scores: emptyScores(),
-    notes: emptyNotes(),
-    tong: ""
-  };
-
-  function route() {
-    const hash = location.hash.replace(/^#/, "") || "/";
-    const parts = hash.split("/").filter(Boolean);
-    if (!parts.length) return { name: "home" };
-    if (parts[0] === "lich-su") return { name: "history" };
-    if (parts[0] === "xu-huong") return { name: "trends" };
-    if (parts[0] === "can-cu") return { name: "canon" };
-    if (parts[0] === "phien" && parts[1]) return { name: "detail", id: parts[1] };
-    return { name: "home" };
-  }
-
-  function setNavActive() {
-    const r = route();
-    document.querySelectorAll("nav a").forEach((a) => {
-      const path = a.getAttribute("data-route");
-      let on = false;
-      if (path === "/" && r.name === "home") on = true;
-      if (path === "/lich-su" && (r.name === "history" || r.name === "detail")) on = true;
-      if (path === "/xu-huong" && r.name === "trends") on = true;
-      if (path === "/can-cu" && r.name === "canon") on = true;
-      a.classList.toggle("active", on);
-    });
-  }
-
-  function renderHome() {
-    const qc = quyCan(draft).toFixed(1);
-    const cards = CRITERIA.map((item) => {
-      const score = draft.scores[item.id] || 0;
-      const trong = TRONG_TAM.includes(item.id);
-      const pills = [0, 1, 2, 3, 4].map((s) =>
-        `<button type="button" class="pill ${score === s ? "active" : ""} ${score === s && s === 1 ? "warn-pill" : ""}" data-score-id="${item.id}" data-score="${s}">${SCORE_LABELS[s]}</button>`
-      ).join("");
-      return `
-        <article class="card" data-crit="${item.id}">
-          <div class="meta-row">
-            <div>
-              <p class="subtle">Mục ${item.so}${trong ? " · then chốt giai đoạn này" : ""}</p>
-              <h3>${escapeHtml(item.ten)}</h3>
-            </div>
-            <span class="han">${String(item.so).padStart(2, "0")}</span>
-          </div>
-          <p>${escapeHtml(item.hoi)}</p>
-          <ul class="hint">${item.goiY.map((g) => `<li>${escapeHtml(g)}</li>`).join("")}</ul>
-          <blockquote class="han">${escapeHtml(item.han)}</blockquote>
-          <p class="muted" style="font-size:0.9rem;font-style:italic">${escapeHtml(item.dich)}</p>
-          <p class="subtle">${escapeHtml(item.nguon)}</p>
-          <p class="warn-box">${escapeHtml(item.canhBao)}</p>
-          <div class="pills">${pills}</div>
-          <label class="field" style="margin-top:0.85rem">
-            <span>Ghi chú buổi này</span>
-            <textarea data-note-id="${item.id}" rows="2" placeholder="Cảm thọ cụ thể, không diễn giải…">${escapeHtml(draft.notes[item.id] || "")}</textarea>
-          </label>
-        </article>`;
+function renderHome(){
+  var qc=quyCan(draft).toFixed(1);
+  var cards=C.map(function(item){
+    var sc=draft.scores[item.id]||0;
+    var core=CORE.indexOf(item.id)>=0;
+    var pills=[0,1,2,3,4].map(function(s){
+      return '<button type="button" class="pill'+(sc===s?" on":"")+(sc===s&&s===1?" bad":"")+'" data-sid="'+item.id+'" data-sc="'+s+'">'+LABELS[s]+'</button>';
     }).join("");
+    return '<article class="card"><div class="row"><div><p class="subtle">Mục '+item.so+(core?" · then chốt":"")+'</p><h3>'+esc(item.ten)+'</h3></div><span class="han">'+(item.so<10?"0":"")+item.so+'</span></div><p>'+esc(item.hoi)+'</p><ul class="hint">'+item.goiY.map(function(g){return "<li>"+esc(g)+"</li>"}).join("")+'</ul><blockquote class="han">'+esc(item.han)+'</blockquote><p class="muted" style="font-size:.9rem;font-style:italic">'+esc(item.dich)+'</p><p class="subtle">'+esc(item.nguon)+'</p><p class="wb">'+esc(item.cb)+'</p><div class="pills">'+pills+'</div><label class="f" style="margin-top:.85rem"><span>Ghi chú buổi này</span><textarea data-nid="'+item.id+'" rows="2" placeholder="Cảm thọ cụ thể…">'+esc(draft.notes[item.id]||"")+'</textarea></label></article>';
+  }).join("");
+  return '<section class="card"><p class="han" style="font-size:.9rem">每坐一考 · mỗi ngồi một khảo</p><h2>Phiếu nhật khảo</h2><p class="muted" style="font-size:.9rem">Chấm ngay sau khi xuống tọa. Cảnh khớp cổ tịch không đồng nghĩa đã kết đan. Bốn mục then chốt: nguồn khí, quy hạ đan, địa hộ, vô vi.</p><div class="grid3"><label class="f"><span>Ngày</span><input type="date" id="f-date" value="'+esc(draft.date)+'"/></label><label class="f"><span>Thời lượng (phút)</span><input type="number" id="f-dur" min="1" max="300" value="'+draft.durationMin+'"/></label><div class="stat"><p class="subtle">Chỉ số quy căn</p><strong id="qc">'+qc+'</strong><p class="subtle">TB 4 mục then chốt</p></div></div></section>'+cards+'<label class="f" style="margin:.5rem 0 .75rem"><span style="color:var(--ink);font-size:.9rem;font-weight:500">Tổng cảm buổi ngồi</span><textarea id="f-tong" rows="4" placeholder="Khí từ đâu, về đâu, có cưỡng ý không.">'+esc(draft.tong)+'</textarea></label><button type="button" class="btn btn-p" id="btn-save">Lưu phiếu này</button>';
+}
 
-    return `
-      <section class="card">
-        <p class="han" style="font-size:0.9rem">每坐一考 · mỗi ngồi một khảo</p>
-        <h2>Phiếu nhật khảo</h2>
-        <p class="muted" style="font-size:0.9rem">Chấm ngay sau khi xuống tọa. Cảnh khớp cổ tịch không đồng nghĩa đã kết đan. Bốn mục then chốt giai đoạn Cam Lộ: nguồn khí, quy hạ đan, địa hộ, vô vi.</p>
-        <div class="grid-3">
-          <label class="field">
-            <span>Ngày</span>
-            <input type="date" id="f-date" value="${escapeHtml(draft.date)}" />
-          </label>
-          <label class="field">
-            <span>Thời lượng (phút)</span>
-            <input type="number" id="f-dur" min="1" max="300" value="${draft.durationMin}" />
-          </label>
-          <div class="stat-box">
-            <p class="subtle">Chỉ số quy căn</p>
-            <strong id="qc-val">${qc}</strong>
-            <p class="subtle">Trung bình 4 mục then chốt</p>
-          </div>
-        </div>
-      </section>
-      ${cards}
-      <label class="field" style="margin:0.5rem 0 0.75rem">
-        <span style="color:var(--ink);font-size:0.9rem;font-weight:500">Tổng cảm buổi ngồi</span>
-        <textarea id="f-tong" rows="4" placeholder="Một đoạn ngắn: khí từ đâu, về đâu, có cưỡng ý không.">${escapeHtml(draft.tong)}</textarea>
-      </label>
-      <button type="button" class="btn btn-primary" id="btn-save">Lưu phiếu này</button>
-    `;
-  }
+function renderHistory(){
+  var list=load();
+  if(!list.length)return '<div class="empty"><p style="font-family:var(--fd);font-size:1.1rem;margin:0">Chưa có phiếu nào</p><p class="muted" style="font-size:.9rem">Sau buổi ngồi, vào Phiếu mới và chấm 13 mục.</p><p style="margin-top:1.25rem"><a class="btn btn-p" style="width:auto;display:inline-flex;padding:.6rem 1.25rem" href="#/">Mở phiếu mới</a></p></div>';
+  return '<h2 style="font-family:var(--fd);font-size:1.25rem;margin:0 0 .75rem">Lịch sử ngồi</h2>'+list.map(function(s){
+    var qc=quyCan(s).toFixed(1);var a=avg(s).toFixed(1);var ha=LABELS[s.scores["ha-dan"]||0];
+    return '<a class="ll" href="#/phien/'+encodeURIComponent(s.id)+'"><div><p style="margin:0;font-weight:500;font-variant-numeric:tabular-nums">'+esc(s.date)+'</p><p class="muted" style="margin:.15rem 0 0;font-size:.875rem">'+s.durationMin+' phút · hạ đan '+ha+'</p></div><div style="text-align:right"><p class="subtle" style="margin:0">Quy căn</p><p class="pine" style="margin:0;font-family:var(--fd);font-size:1.25rem;font-variant-numeric:tabular-nums">'+qc+'</p><p class="muted" style="margin:0;font-size:.75rem">TB '+a+'</p></div></a>';
+  }).join("");
+}
 
-  function renderHistory() {
-    const sessions = loadSessions();
-    if (!sessions.length) {
-      return `
-        <div class="empty">
-          <p style="font-family:var(--font-display);font-size:1.1rem;margin:0">Chưa có phiếu nào</p>
-          <p class="muted" style="font-size:0.9rem">Sau buổi ngồi, vào Phiếu mới và chấm 10 mục.</p>
-          <p style="margin-top:1.25rem"><a class="btn btn-primary" style="width:auto;display:inline-flex;padding:0.6rem 1.25rem" href="#/" data-nav>Mở phiếu mới</a></p>
-        </div>`;
-    }
-    return `
-      <h2 style="font-family:var(--font-display);font-size:1.25rem;margin:0 0 0.75rem">Lịch sử ngồi</h2>
-      ${sessions.map((s) => {
-        const qc = quyCan(s).toFixed(1);
-        const avg = average(s).toFixed(1);
-        const ha = SCORE_LABELS[s.scores["ha-dan"] || 0];
-        return `
-          <a class="list-link" href="#/phien/${encodeURIComponent(s.id)}" data-nav>
-            <div>
-              <p style="margin:0;font-weight:500;font-variant-numeric:tabular-nums">${escapeHtml(s.date)}</p>
-              <p class="muted" style="margin:0.15rem 0 0;font-size:0.875rem">${s.durationMin} phút · hạ đan ${ha}</p>
-            </div>
-            <div style="text-align:right">
-              <p class="subtle" style="margin:0">Quy căn</p>
-              <p class="pine" style="margin:0;font-family:var(--font-display);font-size:1.25rem;font-variant-numeric:tabular-nums">${qc}</p>
-              <p class="muted" style="margin:0;font-size:0.75rem">TB ${avg}</p>
-            </div>
-          </a>`;
-      }).join("")}`;
-  }
+function renderDetail(id){
+  var s=load().filter(function(x){return x.id===id})[0];
+  if(!s)return '<p class="muted">Không tìm thấy phiếu. <a href="#/lich-su" class="pine" style="text-decoration:underline">Về lịch sử</a></p>';
+  return '<div class="row" style="margin-bottom:1rem"><div><p class="muted" style="margin:0;font-variant-numeric:tabular-nums">'+esc(s.date)+'</p><h2 style="font-family:var(--fd);font-size:1.25rem;margin:.2rem 0">Phiếu '+s.durationMin+' phút</h2><p class="pine" style="margin:0;font-size:.9rem">Chỉ số quy căn '+quyCan(s).toFixed(1)+' / 4</p></div><button type="button" class="btn btn-d" id="btn-del" data-id="'+esc(s.id)+'">Xóa</button></div>'+(s.tong?'<p class="card" style="font-size:.9rem">'+esc(s.tong)+'</p>':'')+'<ol style="list-style:none;padding:0;margin:0">'+C.map(function(c){
+    return '<li class="card"><div class="row"><h3 style="font-size:1rem;margin:0">'+c.so+'. '+esc(c.ten)+'</h3><span class="pine" style="font-size:.9rem">'+LABELS[s.scores[c.id]||0]+'</span></div>'+(s.notes[c.id]?'<p class="muted" style="margin:.5rem 0 0;font-size:.875rem">'+esc(s.notes[c.id])+'</p>':'')+'</li>';
+  }).join("")+'</ol>';
+}
 
-  function renderDetail(id) {
-    const s = loadSessions().find((x) => x.id === id);
-    if (!s) {
-      return `<p class="muted">Không tìm thấy phiếu. <a href="#/lich-su" class="pine" data-nav style="text-decoration:underline">Về lịch sử</a></p>`;
-    }
-    return `
-      <div class="meta-row" style="margin-bottom:1rem">
-        <div>
-          <p class="muted" style="margin:0;font-variant-numeric:tabular-nums">${escapeHtml(s.date)}</p>
-          <h2 style="font-family:var(--font-display);font-size:1.25rem;margin:0.2rem 0">Phiếu ${s.durationMin} phút</h2>
-          <p class="pine" style="margin:0;font-size:0.9rem">Chỉ số quy căn ${quyCan(s).toFixed(1)} / 4</p>
-        </div>
-        <button type="button" class="btn btn-danger" id="btn-del" data-id="${escapeHtml(s.id)}">Xóa</button>
-      </div>
-      ${s.tong ? `<p class="card" style="font-size:0.9rem">${escapeHtml(s.tong)}</p>` : ""}
-      <ol style="list-style:none;padding:0;margin:0">
-        ${CRITERIA.map((c) => `
-          <li class="card">
-            <div class="meta-row">
-              <h3 style="font-size:1rem;margin:0">${c.so}. ${escapeHtml(c.ten)}</h3>
-              <span class="pine" style="font-size:0.9rem">${SCORE_LABELS[s.scores[c.id] || 0]}</span>
-            </div>
-            ${s.notes[c.id] ? `<p class="muted" style="margin:0.5rem 0 0;font-size:0.875rem">${escapeHtml(s.notes[c.id])}</p>` : ""}
-          </li>`).join("")}
-      </ol>`;
-  }
+function renderTrends(){
+  var sessions=load().slice().reverse();
+  if(!sessions.length)return '<p class="muted">Cần ít nhất một phiếu đã lưu.</p>';
+  var latest=sessions[sessions.length-1];
+  function avgBy(id){var vals=sessions.map(function(s){return s.scores[id]||0}).filter(function(v){return v>0});if(!vals.length)return 0;return vals.reduce(function(a,b){return a+b},0)/vals.length}
+  return '<header style="margin-bottom:1rem"><h2 style="font-family:var(--fd);font-size:1.25rem;margin:0">Xu hướng</h2><p class="muted" style="margin:.35rem 0 0;font-size:.9rem">'+sessions.length+' buổi. Cổ tịch xem bốn cột then chốt hơn quang cảm.</p></header><section class="card"><p class="subtle" style="margin:0">Quy căn theo thời gian</p><div class="bars">'+sessions.map(function(s){var v=quyCan(s);var h=Math.max(6,(v/4)*100);return '<div class="bar" style="height:'+h+'%" title="'+esc(s.date)+': '+v.toFixed(1)+'"></div>'}).join("")+'</div><p class="muted" style="margin:.6rem 0 0;font-size:.875rem">Phiếu mới nhất: '+quyCan(latest).toFixed(1)+' / 4</p></section><section style="margin-top:1.25rem"><h3 style="font-size:1rem;margin:0 0 .75rem">Trung bình từng mục</h3>'+C.map(function(c){var a=avgBy(c.id);return '<div><div style="display:flex;justify-content:space-between;font-size:.875rem;margin-bottom:.25rem"><span>'+esc(c.ten)+'</span><span class="muted" style="font-variant-numeric:tabular-nums">'+a.toFixed(1)+'</span></div><div class="prog"><i style="width:'+(a/4)*100+'%"></i></div></div>'}).join("")+'</section>';
+}
 
-  function renderTrends() {
-    const sessions = loadSessions().slice().reverse();
-    if (!sessions.length) {
-      return `<p class="muted">Cần ít nhất một phiếu đã lưu.</p>`;
-    }
-    const latest = sessions[sessions.length - 1];
-    const avgBy = (id) => {
-      const vals = sessions.map((s) => s.scores[id] || 0).filter((v) => v > 0);
-      if (!vals.length) return 0;
-      return vals.reduce((a, b) => a + b, 0) / vals.length;
-    };
-    return `
-      <header style="margin-bottom:1rem">
-        <h2 style="font-family:var(--font-display);font-size:1.25rem;margin:0">Xu hướng</h2>
-        <p class="muted" style="margin:0.35rem 0 0;font-size:0.9rem">${sessions.length} buổi. Cổ tịch xem bốn cột then chốt hơn quang cảm.</p>
-      </header>
-      <section class="card">
-        <p class="subtle" style="margin:0">Quy căn theo thời gian</p>
-        <div class="bars">
-          ${sessions.map((s) => {
-            const v = quyCan(s);
-            const h = Math.max(6, (v / 4) * 100);
-            return `<div class="bar" style="height:${h}%" title="${escapeHtml(s.date)}: ${v.toFixed(1)}"></div>`;
-          }).join("")}
-        </div>
-        <p class="muted" style="margin:0.6rem 0 0;font-size:0.875rem">Phiếu mới nhất: ${quyCan(latest).toFixed(1)} / 4</p>
-      </section>
-      <section style="margin-top:1.25rem">
-        <h3 style="font-size:1rem;margin:0 0 0.75rem">Trung bình từng mục</h3>
-        ${CRITERIA.map((c) => {
-          const a = avgBy(c.id);
-          return `
-            <div>
-              <div style="display:flex;justify-content:space-between;font-size:0.875rem;margin-bottom:0.25rem">
-                <span>${escapeHtml(c.ten)}</span>
-                <span class="muted" style="font-variant-numeric:tabular-nums">${a.toFixed(1)}</span>
-              </div>
-              <div class="progress"><i style="width:${(a / 4) * 100}%"></i></div>
-            </div>`;
-        }).join("")}
-      </section>`;
-  }
+function renderCanon(){
+  return '<header style="margin-bottom:1.25rem"><h2 style="font-family:var(--fd);font-size:1.25rem;margin:0">Căn cứ cổ tịch</h2><p class="muted" style="margin:.4rem 0 0;font-size:.9rem;max-width:40rem">Mười ba mục nhật khảo bám nguyên văn. Dùng để đối chiếu công pháp, không dùng để tự phong quả vị. Cảnh (hiện tượng) khác chứng (đan kết).</p></header>'+C.map(function(c){
+    return '<article class="card"><p class="subtle" style="margin:0">Mục '+c.so+'</p><h3 style="font-family:var(--fd);font-size:1.1rem;margin:.2rem 0">'+esc(c.ten)+'</h3><p style="margin:.35rem 0;font-size:.9rem">'+esc(c.hoi)+'</p><p class="han" style="margin:.6rem 0 .25rem">'+esc(c.han)+'</p><p class="muted" style="margin:0;font-size:.875rem;font-style:italic">'+esc(c.dich)+'</p><p class="subtle" style="margin:.35rem 0 0">'+esc(c.nguon)+'</p><p class="warn" style="margin:.6rem 0 0;font-size:.875rem">'+esc(c.cb)+'</p></article>';
+  }).join("");
+}
 
-  function renderCanon() {
-    return `
-      <header style="margin-bottom:1.25rem">
-        <h2 style="font-family:var(--font-display);font-size:1.25rem;margin:0">Căn cứ cổ tịch</h2>
-        <p class="muted" style="margin:0.4rem 0 0;font-size:0.9rem;max-width:40rem">Mười mục nhật khảo bám nguyên văn. Dùng để đối chiếu công pháp, không dùng để tự phong quả vị. Cảnh (hiện tượng) khác chứng (đan kết).</p>
-      </header>
-      <h3 style="font-size:1rem;margin:0 0 0.6rem">Định vị giai đoạn</h3>
-      ${GIAI_DOAN.map((g) => `
-        <blockquote class="card">
-          <p class="han" style="margin:0">${escapeHtml(g.han)}</p>
-          <p class="muted" style="margin:0.5rem 0 0;font-size:0.875rem;font-style:italic">${escapeHtml(g.dich)}</p>
-          <p class="subtle" style="margin:0.35rem 0 0">${escapeHtml(g.nguon)}</p>
-        </blockquote>`).join("")}
-      <h3 style="font-size:1rem;margin:1.25rem 0 0.6rem">Mười mục và câu chữ</h3>
-      ${CRITERIA.map((c) => `
-        <article class="card">
-          <p class="subtle" style="margin:0">Mục ${c.so}</p>
-          <h3 style="font-family:var(--font-display);font-size:1.1rem;margin:0.2rem 0">${escapeHtml(c.ten)}</h3>
-          <p style="margin:0.35rem 0;font-size:0.9rem">${escapeHtml(c.hoi)}</p>
-          <p class="han" style="margin:0.6rem 0 0.25rem">${escapeHtml(c.han)}</p>
-          <p class="muted" style="margin:0;font-size:0.875rem;font-style:italic">${escapeHtml(c.dich)}</p>
-          <p class="subtle" style="margin:0.35rem 0 0">${escapeHtml(c.nguon)}</p>
-          <p class="warn" style="margin:0.6rem 0 0;font-size:0.875rem">${escapeHtml(c.canhBao)}</p>
-        </article>`).join("")}`;
-  }
-
-  function bindHome() {
-    const app = document.getElementById("app");
-    app.querySelectorAll("[data-score-id]").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const id = btn.getAttribute("data-score-id");
-        const s = Number(btn.getAttribute("data-score"));
-        draft.scores[id] = s;
-        const parent = btn.parentElement;
-        parent.querySelectorAll(".pill").forEach((p) => {
-          const ps = Number(p.getAttribute("data-score"));
-          p.classList.toggle("active", ps === s);
-          p.classList.toggle("warn-pill", ps === s && s === 1);
-        });
-        const qc = document.getElementById("qc-val");
-        if (qc) qc.textContent = quyCan(draft).toFixed(1);
+function bindHome(){
+  var app=document.getElementById("app");
+  app.querySelectorAll("[data-sid]").forEach(function(btn){
+    btn.addEventListener("click",function(){
+      var id=btn.getAttribute("data-sid");
+      var s=Number(btn.getAttribute("data-sc"));
+      draft.scores[id]=s;
+      var parent=btn.parentElement;
+      parent.querySelectorAll(".pill").forEach(function(p){
+        var ps=Number(p.getAttribute("data-sc"));
+        p.classList.toggle("on",ps===s);
+        p.classList.toggle("bad",ps===s&&s===1);
       });
+      var qc=document.getElementById("qc");
+      if(qc)qc.textContent=quyCan(draft).toFixed(1);
     });
-    app.querySelectorAll("[data-note-id]").forEach((ta) => {
-      ta.addEventListener("input", () => {
-        draft.notes[ta.getAttribute("data-note-id")] = ta.value;
-      });
-    });
-    const date = document.getElementById("f-date");
-    const dur = document.getElementById("f-dur");
-    const tong = document.getElementById("f-tong");
-    if (date) date.addEventListener("change", () => { draft.date = date.value; });
-    if (dur) dur.addEventListener("change", () => { draft.durationMin = Number(dur.value) || 0; });
-    if (tong) tong.addEventListener("input", () => { draft.tong = tong.value; });
-    const save = document.getElementById("btn-save");
-    if (save) {
-      save.addEventListener("click", () => {
-        try {
-          const now = new Date();
-          const session = {
-            id: (draft.id && draft.id !== "draft") ? draft.id : uid(),
-            createdAt: now.toISOString(),
-            date: draft.date || today(),
-            durationMin: Number(draft.durationMin) || 30,
-            scores: Object.assign({}, draft.scores),
-            notes: Object.assign({}, draft.notes),
-            tong: draft.tong || ""
-          };
-          upsertSession(session);
-          draft = {
-            id: uid(),
-            createdAt: "",
-            date: today(),
-            durationMin: 30,
-            scores: emptyScores(),
-            notes: emptyNotes(),
-            tong: ""
-          };
-          location.hash = "#/lich-su";
-        } catch (err) {
-          alert("Không lưu được phiếu: " + (err && err.message ? err.message : String(err)));
-        }
-      });
-    }
-  }
+  });
+  app.querySelectorAll("[data-nid]").forEach(function(ta){
+    ta.addEventListener("input",function(){draft.notes[ta.getAttribute("data-nid")]=ta.value});
+  });
+  var date=document.getElementById("f-date");
+  var dur=document.getElementById("f-dur");
+  var tong=document.getElementById("f-tong");
+  if(date)date.addEventListener("change",function(){draft.date=date.value});
+  if(dur)dur.addEventListener("change",function(){draft.durationMin=Number(dur.value)||0});
+  if(tong)tong.addEventListener("input",function(){draft.tong=tong.value});
+  var save=document.getElementById("btn-save");
+  if(save)save.addEventListener("click",function(){
+    try{
+      var now=new Date();
+      var session={id:draft.id||uid(),createdAt:now.toISOString(),date:draft.date||today(),durationMin:Number(draft.durationMin)||30,scores:Object.assign({},draft.scores),notes:Object.assign({},draft.notes),tong:draft.tong||""};
+      upsert(session);
+      draft={id:uid(),createdAt:"",date:today(),durationMin:30,scores:emptyScores(),notes:emptyNotes(),tong:""};
+      toast("Đã lưu phiếu");
+      location.hash="#/lich-su";
+    }catch(err){alert("Không lưu được: "+(err&&err.message?err.message:String(err)))}
+  });
+}
 
-  function bindDetail() {
-    const btn = document.getElementById("btn-del");
-    if (!btn) return;
-    btn.addEventListener("click", () => {
-      if (confirm("Xóa phiếu này?")) {
-        deleteSession(btn.getAttribute("data-id"));
-        location.hash = "#/lich-su";
-      }
-    });
-  }
+function bindDetail(){
+  var btn=document.getElementById("btn-del");
+  if(!btn)return;
+  btn.addEventListener("click",function(){
+    if(confirm("Xóa phiếu này?")){del(btn.getAttribute("data-id"));location.hash="#/lich-su"}
+  });
+}
 
-  function render() {
-    const r = route();
-    setNavActive();
-    const app = document.getElementById("app");
-    if (r.name === "home") {
-      app.innerHTML = renderHome();
-      bindHome();
-    } else if (r.name === "history") {
-      app.innerHTML = renderHistory();
-    } else if (r.name === "detail") {
-      app.innerHTML = renderDetail(r.id);
-      bindDetail();
-    } else if (r.name === "trends") {
-      app.innerHTML = renderTrends();
-    } else if (r.name === "canon") {
-      app.innerHTML = renderCanon();
-    }
-    window.scrollTo(0, 0);
-  }
+function render(){
+  var r=route();setNav();
+  var app=document.getElementById("app");
+  if(r.n==="home"){app.innerHTML=renderHome();bindHome()}
+  else if(r.n==="history"){app.innerHTML=renderHistory()}
+  else if(r.n==="detail"){app.innerHTML=renderDetail(r.id);bindDetail()}
+  else if(r.n==="trends"){app.innerHTML=renderTrends()}
+  else if(r.n==="canon"){app.innerHTML=renderCanon()}
+  window.scrollTo(0,0);
+}
 
-  window.addEventListener("hashchange", render);
-  render();
+window.addEventListener("hashchange",render);
+render();
 })();
-  </script>
+</script>
 </body>
 </html>
