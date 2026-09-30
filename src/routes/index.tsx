@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { CriterionCard } from "@/components/criterion-card";
 import { CRITERIA, type Score } from "@/lib/criteria";
@@ -24,8 +24,8 @@ function blankDraft(): Session {
 }
 
 function Home() {
-  const navigate = useNavigate();
   const [draft, setDraft] = useState<Session>(blankDraft);
+  const [successMsg, setSuccessMsg] = useState(false);
 
   useEffect(() => {
     const now = new Date();
@@ -49,29 +49,40 @@ function Home() {
         date: draft.date || now.toISOString().slice(0, 10),
       };
 
-      // Lưu trực tiếp vào localStorage một cách an toàn mà không qua hàm lỗi
+      // Lưu trực tiếp vào localStorage an toàn
       const existingData = localStorage.getItem("nhat_khao_sessions");
       const sessions: Session[] = existingData ? JSON.parse(existingData) : [];
-      
-      const index = sessions.findIndex((s) => s.id === sessionToSave.id);
-      if (index >= 0) {
-        sessions[index] = sessionToSave;
-      } else {
-        sessions.unshift(sessionToSave);
-      }
-      
+      sessions.unshift(sessionToSave);
       localStorage.setItem("nhat_khao_sessions", JSON.stringify(sessions));
 
-      // Chuyển hướng sang trang lịch sử
-      void navigate({ to: "/lich-su" });
+      // Hiển thị thông báo thành công tại chỗ, không dùng router navigate gây lỗi crash #185
+      setSuccessMsg(true);
+      setTimeout(() => setSuccessMsg(false), 4000);
+
+      // Reset lại phiếu mới
+      setDraft({
+        id: `${now.getTime().toString(36)}-${Math.random().toString(36).slice(2, 8)}`,
+        createdAt: now.toISOString(),
+        date: now.toISOString().slice(0, 10),
+        durationMin: 30,
+        scores: emptyScores(),
+        notes: emptyNotes(),
+        tong: "",
+      });
     } catch (error) {
-      console.error("Lỗi khi lưu:", error);
-      alert("Không thể lưu phiếu do lỗi bộ nhớ trình duyệt.");
+      console.error("Lỗi:", error);
+      alert("Không thể lưu phiếu.");
     }
   }
 
   return (
     <main className="space-y-5">
+      {successMsg && (
+        <div className="rounded-md bg-green-100 border border-green-400 p-4 text-green-700 font-medium text-center">
+          Đã lưu phiếu nhật khảo thành công! Bạn có thể xem lại ở mục Lịch sử.
+        </div>
+      )}
+
       <section className="rounded-lg border border-line bg-surface p-5">
         <p className="font-han text-sm text-pine">每坐一考 · mỗi ngồi một khảo</p>
         <h2 className="mt-1 font-display text-xl font-semibold">Phiếu nhật khảo</h2>
